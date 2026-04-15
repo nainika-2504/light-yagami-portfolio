@@ -16,16 +16,16 @@ A cinematic, single-page portfolio website themed around **Light Yagami** from D
 
 | Feature | Description |
 |---|---|
-| **Cinematic Hero** | Split-panel hero with Light Yagami portrait, red-glow flash on hover, and a custom crosshair cursor with a trailing dot effect |
-| **Interactive Image Reveal** | Hover over the right panel to trigger a red radiance overlay (canvas-based pixel reveal of Ryuk beneath Light) |
-| **Typewriter Death Note Rules** | Five canonical Death Note rules typed out character-by-character as you scroll into view |
-| **Judgements Grid** | Project cards styled as "case files" — hover turns the card border blood-red with an inner glow |
-| **Cognitive Arsenal** | Cycling glitch-word display (`STRATEGY → JUSTICE → CONTROL → KIRA`) backed by GSAP scroll parallax |
-| **Personality Profile Bars** | Animated trait bars (Intelligence 99, Ambition 95, Conviction ∞…) triggered on scroll |
-| **Death Note Modal** | Click "Write a Name" to open a dramatic dark modal — enter a name, hit *Seal the Judgement*, and receive a cinematic confirmation |
-| **Book-Close Animation** | Scrolling into the final section triggers a sweeping black overlay with "You have been judged." before revealing the contact CTA |
-| **Film-Grain Overlay** | A subtle SVG noise texture sits at `z-index: 9999` to give the whole page an aged, paper-like feel |
-| **GSAP ScrollTrigger** | Parallax on the hero text, perspective tilt on the rules section, card stagger on judgements, and red circle scale-in on the final section |
+| **Cinematic Hero** | Split-panel hero with portrait, red-glow flash/auto-glow, and custom crosshair cursor |
+| **Mobile Simulator** | Interactive toggle to switch between Desktop and Mobile views with responsive scaling |
+| **Interactive Ryuk Reveal** | Hover/erase the right panel to pixel-reveal Ryuk beneath Light using canvas rendering |
+| **Judgement Execution** | Sealing a name in the Death Note triggers a cinematic, fullscreen video execution sequence |
+| **Typewriter Rules** | Canonical Death Note rules typed out with GSAP-triggered perspective scroll effects |
+| **Judgements Grid** | Project "case files" with blood-red glow hover states and container-query responsiveness |
+| **Cognitive Arsenal** | Centered glitch-word cycling (`STRATEGY → JUSTICE → CONTROL → ...`) with scroll parallax |
+| **Personality Profile** | Animated trait bars and capability grids that stack vertically on mobile/simulated views |
+| **Death Note Modal** | A dramatic, book-opening modal used to capture names before the final video sequence |
+| **Atmospheric Polish** | Film-grain overlay, custom scrollbars, and SVG noise textures for a premium anime feel |
 
 ---
 
@@ -33,7 +33,8 @@ A cinematic, single-page portfolio website themed around **Light Yagami** from D
 
 ```
 abb/
-└── index.html      # Entire site — HTML, CSS, and JS in one self-contained file
+├── index.html      # Main application logic (HTML/CSS/JS)
+└── judgement.mp4   # Cinematic video asset for the judgement sequence
 ```
 
 All assets (fonts, GSAP) are loaded via CDN. The portrait is embedded as a Base64 JPEG — no external image hosting required.

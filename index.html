@@ -325,11 +325,13 @@
             mix-blend-mode: screen;
         }
 
-        .hero-right:hover .hero-flash {
+        .hero-right:hover .hero-flash,
+        .hero-right.auto-glow .hero-flash {
             opacity: 1;
         }
 
-        .hero-right:hover {
+        .hero-right:hover,
+        .hero-right.auto-glow {
             box-shadow: inset 0 0 80px rgba(200, 0, 0, 0.4), 0 0 60px rgba(180, 0, 0, 0.3);
         }
 
@@ -523,15 +525,26 @@
             cursor: pointer;
             border: 1px solid rgba(139, 0, 0, 0.1);
             transition: border-color 0.4s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .case-img {
+            display: none;
+        }
+
+        .case-content {
+            display: contents;
         }
 
         .case-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at top left, rgba(139, 0, 0, 0.12), transparent 60%);
+            background: radial-gradient(ellipse at top left, rgba(139, 0, 0, 0.6), transparent 80%);
             opacity: 0;
             transition: opacity 0.4s;
+            z-index: 1;
         }
 
         .case-card:hover::before {
@@ -559,9 +572,12 @@
         .case-name {
             font-family: var(--font-type);
             font-size: 1.1rem;
-            color: var(--ink);
+            color: var(--white);
             margin-bottom: 0.75rem;
             letter-spacing: 0.05em;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(180, 0, 0, 0.4);
+            position: relative;
+            z-index: 2;
         }
 
         .case-name-written {
@@ -587,10 +603,13 @@
 
         .case-desc {
             font-family: var(--font-body);
-            font-size: 0.9rem;
-            color: rgba(212, 201, 168, 0.5);
+            font-size: 0.95rem;
+            color: rgba(232, 224, 208, 0.85);
             line-height: 1.8;
             margin-bottom: 2rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+            position: relative;
+            z-index: 2;
         }
 
         .case-tags {
@@ -657,7 +676,8 @@
             position: relative;
             z-index: 10;
             text-align: center;
-            max-width: 900px;
+            max-width: 1000px;
+            margin: 0 auto;
             padding: 0 3rem;
         }
 
@@ -668,11 +688,13 @@
             color: var(--white);
             line-height: 1;
             position: relative;
-            display: inline-block;
+            display: block;
+            width: 100%;
+            text-align: center;
             cursor: default;
         }
 
-        .mind-word-reveal:hover {
+        .mind-word-reveal.active {
             color: var(--red-bright);
             text-shadow: 0 0 40px var(--red-glow);
             animation: glitch 0.3s steps(2) infinite;
@@ -690,6 +712,12 @@
             padding: 2.5rem 1.5rem;
             border-top: 1px solid rgba(139, 0, 0, 0.25);
             position: relative;
+            transition: background 0.5s ease;
+        }
+
+        .cap-item.active {
+            background: linear-gradient(rgba(10, 10, 10, 0.82), rgba(10, 10, 10, 0.82)), url('https://i.pinimg.com/736x/f5/79/67/f5796782f1fd7bdd81973b20eb126b5a.jpg') center/cover no-repeat;
+            border-top: 1px solid var(--red-bright);
         }
 
         .cap-item::before {
@@ -713,6 +741,12 @@
             color: var(--red);
             margin-bottom: 1.5rem;
             display: block;
+            transition: all 0.5s ease;
+        }
+
+        .cap-item.active .cap-icon {
+            color: var(--red-bright);
+            text-shadow: 0 0 15px var(--red-glow);
         }
 
         .cap-name {
@@ -722,6 +756,12 @@
             color: var(--ink);
             text-transform: uppercase;
             margin-bottom: 1rem;
+            transition: all 0.5s ease;
+        }
+
+        .cap-item.active .cap-name {
+            color: var(--white);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 15px var(--red-glow);
         }
 
         .cap-desc {
@@ -729,6 +769,12 @@
             font-size: 0.95rem;
             color: rgba(212, 201, 168, 0.45);
             line-height: 1.8;
+            transition: all 0.5s ease;
+        }
+
+        .cap-item.active .cap-desc {
+            color: rgba(232, 224, 208, 0.95);
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
         }
 
         /* FINAL */
@@ -1020,6 +1066,7 @@
             justify-content: center;
             pointer-events: none;
             transition: background 0.5s ease;
+            perspective: 1500px;
         }
 
         .dn-overlay.open {
@@ -1027,23 +1074,108 @@
             pointer-events: all;
         }
 
-        .dn-modal {
+        .dn-book-wrapper {
             position: relative;
-            background: #0a0a0a;
-            border: 1px solid rgba(139, 0, 0, 0.6);
-            padding: 3.5rem 3rem 3rem;
-            max-width: 480px;
             width: 90%;
-            text-align: center;
-            box-shadow: 0 0 80px rgba(180, 0, 0, 0.35), inset 0 0 40px rgba(0, 0, 0, 0.6);
+            max-width: 480px;
+            perspective: 1500px;
             opacity: 0;
             transform: translateY(30px) scale(0.96);
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .dn-overlay.open .dn-modal {
+        .dn-overlay.open .dn-book-wrapper {
             opacity: 1;
             transform: translateY(0) scale(1);
+        }
+
+        .dn-book {
+            position: relative;
+            width: 100%;
+            transform-style: preserve-3d;
+        }
+
+        /* The cover pivoting on left edge */
+        .dn-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            z-index: 10;
+        }
+
+        /* Open book state */
+        .dn-overlay.open-book .dn-cover {
+            transform: rotateY(-160deg);
+        }
+
+        .dn-cover-front,
+        .dn-cover-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 2px 8px 8px 2px;
+        }
+
+        .dn-cover-front {
+            background: #111;
+            border-right: 2px solid #222;
+            box-shadow: inset 4px 0 10px rgba(0, 0, 0, 0.8), inset -1px 0 2px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 35%;
+        }
+
+        .dn-cover-front::after {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 1px 0 2px rgba(255, 255, 255, 0.05);
+        }
+
+        .dn-cover-front h3 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            color: #d4c9a8;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 6px #000;
+        }
+
+        .dn-cover-front .dn-cover-sub {
+            font-family: var(--font-serif);
+            font-size: 0.85rem;
+            color: rgba(212, 201, 168, 0.6);
+            letter-spacing: 0.3em;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+
+        .dn-cover-back {
+            background: #050505;
+            transform: rotateY(180deg);
+            border-left: 2px solid #222;
+            box-shadow: inset -4px 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .dn-modal {
+            position: relative;
+            background: #0a0a0a;
+            border: 1px solid rgba(139, 0, 0, 0.6);
+            padding: 3.5rem 3rem 3rem;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(180, 0, 0, 0.35), inset 0 0 40px rgba(0, 0, 0, 0.6);
+            border-radius: 2px 8px 8px 2px;
+            z-index: 5;
         }
 
         .dn-modal-close {
@@ -1432,7 +1564,113 @@
             text-align: right;
         }
 
-        @media (max-width: 768px) {
+        /* ── DEVICE SIMULATOR ── */
+        .sim-btn {
+            background: transparent;
+            border: 1px solid rgba(212, 201, 168, 0.4);
+            color: var(--ink);
+            font-family: var(--font-type);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+
+        .sim-btn:hover,
+        .sim-btn.active {
+            border-color: var(--red);
+            color: var(--red-bright);
+        }
+
+        body.simulate-mobile {
+            background: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #site-wrapper {
+            width: 100%;
+            height: 100%;
+            container-type: inline-size;
+        }
+
+        body.simulate-mobile #site-wrapper {
+            width: 375px;
+            height: 812px;
+            position: relative;
+            transform: scale(1);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border: 12px solid #222;
+            border-radius: 36px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), inset 0 0 20px #000;
+            background: var(--black);
+        }
+
+        body.simulate-mobile .simulator-toggle {
+            display: none !important;
+        }
+
+        /* Responsive rules via container */
+        @container (max-width: 768px) {
+            .hero-name {
+                font-size: 15cqw;
+                line-height: 1;
+                margin-bottom: 1rem;
+            }
+
+            .hero-eyebrow {
+                font-size: 0.6rem;
+            }
+
+            .hero-title {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .hero-left {
+                padding-left: 2rem;
+                padding-top: 6rem;
+                width: 100%;
+                z-index: 10;
+                background: rgba(0, 0, 0, 0.6);
+                justify-content: center;
+            }
+
+            .hero-right {
+                width: 100%;
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+                opacity: 0.5;
+            }
+
+            .hero-quote {
+                font-size: 0.9rem;
+            }
+
+            .hover-hint {
+                display: none;
+            }
+
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            #about {
+                padding: 4rem 1.5rem;
+            }
+
             .about-inner {
                 grid-template-columns: 1fr;
                 gap: 3rem;
@@ -1442,567 +1680,801 @@
                 grid-template-columns: 1fr;
             }
 
-            #about {
-                padding: 5rem 2rem;
+            .about-heading {
+                font-size: 2.2rem;
+            }
+
+            .trait-bars {
+                padding: 1.5rem;
+            }
+
+            #rules {
+                padding: 4rem 1.5rem;
+            }
+
+            .rules-title {
+                font-size: 2.2rem;
+            }
+
+            .rule-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            #judgements {
+                padding: 4rem 1.5rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+                margin-bottom: 2rem;
+            }
+
+            .judgements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .case-card {
+                padding: 2rem;
+            }
+
+            #mind {
+                padding-bottom: 4rem;
+            }
+
+            .mind-content {
+                padding: 0 1.5rem;
+            }
+
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin-top: 3rem;
+            }
+
+            .mind-word-reveal {
+                font-size: 2.5rem;
+            }
+
+            .bg-word {
+                font-size: 25cqw !important;
+            }
+
+            .final-title {
+                font-size: 3rem;
+            }
+
+            .final-inner {
+                padding: 0 1.5rem;
+            }
+
+            #dnBook {
+                transform: scale(0.85);
+                transform-origin: center;
+            }
+
+            .dn-cover-front h3 {
+                font-size: 2.5rem;
+            }
+
+            .dn-modal {
+                padding: 2.5rem 1.5rem 2rem;
             }
         }
+
+        /* Fallback native media query just in case */
+        @media (max-width: 768px) {
+            .simulator-toggle {
+                display: none !important;
+            }
+        }
+
+        /* ── VIDEO OVERLAY ── */
+        .video-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        .video-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .video-overlay video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            max-height: 100vh;
+            pointer-events: none; /* Prevents controls from showing if somehow triggered */
+        }
+
     </style>
 </head>
 
 <body>
+    <div id="site-wrapper">
 
-    <div id="custom-cursor"></div>
-    <div class="red-line"></div>
-    <div class="page-flip-line"></div>
+        <div id="custom-cursor"></div>
+        <div class="red-line"></div>
+        <div class="page-flip-line"></div>
 
-    <div class="page-indicator">
-        <div class="page-indicator-num" id="pageNum">01</div>
-        <div class="page-indicator-label">Page</div>
-    </div>
+        <div class="page-indicator">
+            <div class="page-indicator-num" id="pageNum">01</div>
+            <div class="page-indicator-label">Page</div>
+        </div>
 
-    <nav>
-        <div class="nav-logo">Death Note — L.Y.</div>
-        <ul class="nav-links">
-            <li><a href="#hero">Identity</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#rules">Rules</a></li>
-            <li><a href="#judgements">Judgements</a></li>
-            <li><a href="#mind">Mind</a></li>
-            <li><a href="#final">Contact</a></li>
-        </ul>
-    </nav>
+        <nav>
+            <div class="nav-logo">Death Note — L.Y.</div>
+            <ul class="nav-links">
+                <li><a href="#hero">Identity</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#rules">Rules</a></li>
+                <li><a href="#judgements">Judgements</a></li>
+                <li><a href="#mind">Mind</a></li>
+                <li><a href="#final">Contact</a></li>
+            </ul>
+            <div class="simulator-toggle">
+                <button id="simToggleBtn" class="sim-btn">📱 Mobile</button>
+            </div>
+        </nav>
 
-    <div class="book-container">
+        <div class="book-container">
 
-        <section id="hero">
-            <div class="hero-left">
-                <div class="hero-eyebrow">Case No. 001 — Identity</div>
-                <h1 class="hero-name">
-                    Light<br>
-                    <span>Yagami</span>
-                </h1>
-                <p class="hero-title">The God of the New World</p>
-                <div class="hero-divider"></div>
-                <p class="hero-quote">
-                    "This world is rotten, and those who are making it rot deserve to die.
-                    Someone has to do it."
-                </p>
-                <div class="hero-scroll-hint">
-                    <div class="scroll-line"></div>
-                    Scroll to begin
+            <section id="hero">
+                <div class="hero-left">
+                    <div class="hero-eyebrow">Case No. 001 — Identity</div>
+                    <h1 class="hero-name">
+                        Light<br>
+                        <span>Yagami</span>
+                    </h1>
+                    <p class="hero-title">The God of the New World</p>
+                    <div class="hero-divider"></div>
+                    <p class="hero-quote">
+                        "This world is rotten, and those who are making it rot deserve to die.
+                        Someone has to do it."
+                    </p>
+                    <div class="hero-scroll-hint">
+                        <div class="scroll-line"></div>
+                        Scroll to begin
+                    </div>
                 </div>
-            </div>
 
-            <div class="hero-right" id="heroRight">
-                <!-- Base layer: Ryuk (right half of source image) -->
-                <img id="heroImg" class="hero-portrait"
-                    src="https://wallpapers.com/images/hd/half-face-of-light-death-note-phone-kydvs2nkv1ut6x2m.jpg"
-                    alt="Light Yagami">
-                <div class="hero-flash"></div>
-                <div class="hover-hint">hover to reveal</div>
-            </div>
-        </section>
+                <div class="hero-right" id="heroRight">
+                    <!-- Base layer: Ryuk (right half of source image) -->
+                    <img id="heroImg" class="hero-portrait"
+                        src="https://wallpapers.com/images/hd/half-face-of-light-death-note-phone-kydvs2nkv1ut6x2m.jpg"
+                        alt="Light Yagami">
+                    <div class="hero-flash"></div>
+                    <div class="hover-hint">hover to reveal</div>
+                </div>
+            </section>
 
-        <!-- ═══════════════════ ABOUT ═══════════════════ -->
-        <section id="about">
-            <div class="about-inner">
+            <!-- ═══════════════════ ABOUT ═══════════════════ -->
+            <section id="about">
+                <div class="about-inner">
 
-                <div class="about-left reveal">
-                    <p class="section-eyebrow">Who Is He</p>
-                    <h2 class="about-heading">The Man Behind<br><span>Kira</span></h2>
-                    <p class="about-bio">
-                        Born to a family of law enforcement, <strong>Light Yagami</strong> was Japan's brightest student
-                        — top of his class at To-Oh University, a national tennis champion, and a prodigy feared even by
-                        his own professors. He was, by every visible measure, perfect.
-                    </p>
-                    <p class="about-bio">
-                        Then the Death Note fell from the sky. And perfection found its purpose.
-                    </p>
-                    <p class="about-bio">
-                        Beneath the model-student facade lived a mind that had already grown bored of a world too
-                        corrupt to fix through ordinary means. Light didn't break — he <em>decided</em>. And in that
-                        decision, a god was born.
-                    </p>
+                    <div class="about-left reveal">
+                        <p class="section-eyebrow">Who Is He</p>
+                        <h2 class="about-heading">The Man Behind<br><span>Kira</span></h2>
+                        <p class="about-bio">
+                            Born to a family of law enforcement, <strong>Light Yagami</strong> was Japan's brightest
+                            student
+                            — top of his class at To-Oh University, a national tennis champion, and a prodigy feared
+                            even by
+                            his own professors. He was, by every visible measure, perfect.
+                        </p>
+                        <p class="about-bio">
+                            Then the Death Note fell from the sky. And perfection found its purpose.
+                        </p>
+                        <p class="about-bio">
+                            Beneath the model-student facade lived a mind that had already grown bored of a world too
+                            corrupt to fix through ordinary means. Light didn't break — he <em>decided</em>. And in that
+                            decision, a god was born.
+                        </p>
 
-                    <div class="about-timeline">
-                        <div class="tl-item reveal">
-                            <span class="tl-year">Age 17</span>
-                            <p class="tl-event">Discovers the Death Note. Begins eliminating criminals globally as Kira.
+                        <div class="about-timeline">
+                            <div class="tl-item reveal">
+                                <span class="tl-year">Age 17</span>
+                                <p class="tl-event">Discovers the Death Note. Begins eliminating criminals globally as
+                                    Kira.
+                                </p>
+                            </div>
+                            <div class="tl-item reveal">
+                                <span class="tl-year">Age 18</span>
+                                <p class="tl-event">Enrols at To-Oh University. Meets L. The greatest battle of minds
+                                    begins.</p>
+                            </div>
+                            <div class="tl-item reveal">
+                                <span class="tl-year">Age 23</span>
+                                <p class="tl-event">Ascends. Becomes the god of the new world — feared by every nation
+                                    on
+                                    Earth.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-right">
+                        <div class="hobby-grid">
+                            <div class="hobby-card reveal">
+                                <span class="hobby-icon">🎾</span>
+                                <h4>Tennis</h4>
+                                <p>National-level champion. Precision, patience, and the will to dominate — on court as
+                                    in
+                                    life.</p>
+                            </div>
+                            <div class="hobby-card reveal">
+                                <span class="hobby-icon">♟</span>
+                                <h4>Chess &amp; Strategy</h4>
+                                <p>Mastered at age 12. Every match is a dissection of the opponent's psychology.</p>
+                            </div>
+                            <div class="hobby-card reveal">
+                                <span class="hobby-icon">📖</span>
+                                <h4>Academic Excellence</h4>
+                                <p>Scored 100th percentile nationally. Studies not for grades — but because knowledge is
+                                    power.</p>
+                            </div>
+                            <div class="hobby-card reveal">
+                                <span class="hobby-icon">🎭</span>
+                                <h4>Theatre of Deception</h4>
+                                <p>Every interaction is a performance. Every word, calculated. Trust is a weapon he
+                                    wields
+                                    perfectly.</p>
+                            </div>
+                        </div>
+
+                        <div class="trait-bars reveal">
+                            <h4 class="trait-title">Personality Profile</h4>
+                            <div class="trait-row" data-pct="99">
+                                <span class="trait-label">Intelligence</span>
+                                <div class="trait-track">
+                                    <div class="trait-fill"></div>
+                                </div>
+                                <span class="trait-val">99</span>
+                            </div>
+                            <div class="trait-row" data-pct="95">
+                                <span class="trait-label">Ambition</span>
+                                <div class="trait-track">
+                                    <div class="trait-fill"></div>
+                                </div>
+                                <span class="trait-val">95</span>
+                            </div>
+                            <div class="trait-row" data-pct="88">
+                                <span class="trait-label">Manipulation</span>
+                                <div class="trait-track">
+                                    <div class="trait-fill"></div>
+                                </div>
+                                <span class="trait-val">88</span>
+                            </div>
+                            <div class="trait-row" data-pct="72">
+                                <span class="trait-label">Empathy</span>
+                                <div class="trait-track">
+                                    <div class="trait-fill"></div>
+                                </div>
+                                <span class="trait-val">72</span>
+                            </div>
+                            <div class="trait-row" data-pct="100">
+                                <span class="trait-label">Conviction</span>
+                                <div class="trait-track">
+                                    <div class="trait-fill"></div>
+                                </div>
+                                <span class="trait-val">∞</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="rules">
+                <div
+                    style="position: absolute; right: 0; top: 0; width: 70%; height: 100%; background: url('https://i.pinimg.com/originals/c4/db/a5/c4dba58695a5f02516498036e79fd1a3.gif') right center / cover no-repeat; opacity: 0.15; pointer-events: none; z-index: 1; mix-blend-mode: screen;">
+                </div>
+                <div class="rules-inner">
+                    <div class="rules-header reveal">How to Use It</div>
+                    <h2 class="rules-title reveal">Rules of the<br>Death Note</h2>
+                    <div class="rule-item" data-rule="The human whose name is written in this note shall die.">
+                        <span class="rule-num">I.</span>
+                        <p class="rule-text"></p>
+                    </div>
+                    <div class="rule-item"
+                        data-rule="This note will not take effect unless the writer has the person's face in their mind when writing their name.">
+                        <span class="rule-num">II.</span>
+                        <p class="rule-text"></p>
+                    </div>
+                    <div class="rule-item"
+                        data-rule="If the cause of death is written within 40 seconds of writing the person's name, it will happen.">
+                        <span class="rule-num">III.</span>
+                        <p class="rule-text"></p>
+                    </div>
+                    <div class="rule-item"
+                        data-rule="If the cause of death is not specified, the person will simply die of a heart attack.">
+                        <span class="rule-num">IV.</span>
+                        <p class="rule-text"></p>
+                    </div>
+                    <div class="rule-item"
+                        data-rule="After writing the cause of death, the details of the death should be written in the next 6 minutes and 40 seconds.">
+                        <span class="rule-num">V.</span>
+                        <p class="rule-text"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="judgements">
+                <p class="section-eyebrow reveal">Case Files — Judged</p>
+                <h2 class="section-title reveal" data-text="Judgements">Judgements</h2>
+                <div class="judgements-grid">
+                    <div class="case-card"
+                        style="background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('https://i.pinimg.com/736x/30/d9/21/30d9218a50a49c8b14b01b9899179186.jpg') center/cover no-repeat;">
+                        <div class="case-num">01</div>
+                        <h3 class="case-name"><span class="case-name-written">Global Crime Reduction</span></h3>
+                        <p class="case-desc">Eliminated thousands of high-profile criminals across the globe.
+                            Caused worldwide fear among offenders. Crime rates significantly decreased —
+                            the world began to bow.</p>
+                        <div class="case-tags"><span class="case-tag">Elimination</span><span class="case-tag">Global
+                                Scale</span><span class="case-tag">Fear Factor</span></div>
+                    </div>
+                    <div class="case-card"
+                        style="background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('https://i.pinimg.com/736x/68/98/df/6898df17998a747d4b7ce337c5741d35.jpg') center/cover no-repeat;">
+                        <div class="case-num">02</div>
+                        <h3 class="case-name"><span class="case-name-written">Anonymous Identity Maintenance</span></h3>
+                        <p class="case-desc">Operated under the alias "Kira" while evading every global law enforcement
+                            agency. Maintained a flawless dual identity as both honours student and silent executioner.
+                        </p>
+                        <div class="case-tags"><span class="case-tag">Alias: Kira</span><span class="case-tag">Dual
+                                Identity</span><span class="case-tag">Ghost Protocol</span></div>
+                    </div>
+                    <div class="case-card"
+                        style="background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.85)), url('https://i.pinimg.com/736x/b5/ea/61/b5ea61b2e3afe22f979e46bbf4647f70.jpg') center/cover no-repeat;">
+                        <div class="case-num">03</div>
+                        <h3 class="case-name"><span class="case-name-written">Psychological Warfare</span></h3>
+                        <p class="case-desc">Outsmarted the world's elite investigators. Manipulated allies and enemies
+                            alike.
+                            Controlled the global narrative through fear, influence, and calculated deception.</p>
+                        <div class="case-tags"><span class="case-tag">Mind Games</span><span
+                                class="case-tag">Manipulation</span><span class="case-tag">Narrative Control</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="mind">
+                <div class="mind-bg-words">
+                    <span class="bg-word" style="font-size:20vw; top:10%; left:-5%;">JUSTICE</span>
+                    <span class="bg-word"
+                        style="font-size:15vw; bottom:5%; right:-5%; animation-delay: -7s;">CONTROL</span>
+                </div>
+                <div class="mind-content">
+                    <p class="section-eyebrow" style="text-align:center; margin-bottom:2rem;">Cognitive Arsenal</p>
+                    <div style="margin-bottom: 3rem;">
+                        <div class="mind-word-reveal reveal" id="mindWordCycle">STRATEGY</div>
+                    </div>
+                    <div class="capabilities-grid">
+                        <div class="cap-item reveal"><span class="cap-icon">I</span>
+                            <div class="cap-name">Strategy</div>
+                            <p class="cap-desc">Multi-step planning across time horizons. Outcome simulation before a
+                                single
+                                action is taken.</p>
+                        </div>
+                        <div class="cap-item reveal"><span class="cap-icon">II</span>
+                            <div class="cap-name">Justice</div>
+                            <p class="cap-desc">Absolute moral clarity. Decisions executed without hesitation, without
+                                mercy, without error.</p>
+                        </div>
+                        <div class="cap-item reveal"><span class="cap-icon">III</span>
+                            <div class="cap-name">Control</div>
+                            <p class="cap-desc">Mastery of systems, people, and outcomes. Variables reduced to zero.</p>
+                        </div>
+                        <div class="cap-item reveal"><span class="cap-icon">IV</span>
+                            <div class="cap-name">Deduction</div>
+                            <p class="cap-desc">Pattern recognition beyond conscious thought. Truth extracted from
+                                noise.
                             </p>
                         </div>
-                        <div class="tl-item reveal">
-                            <span class="tl-year">Age 18</span>
-                            <p class="tl-event">Enrols at To-Oh University. Meets L. The greatest battle of minds
-                                begins.</p>
+                        <div class="cap-item reveal"><span class="cap-icon">V</span>
+                            <div class="cap-name">Precision</div>
+                            <p class="cap-desc">Every action calibrated. Minimal input, maximum consequence.</p>
                         </div>
-                        <div class="tl-item reveal">
-                            <span class="tl-year">Age 23</span>
-                            <p class="tl-event">Ascends. Becomes the god of the new world — feared by every nation on
-                                Earth.</p>
+                        <div class="cap-item reveal"><span class="cap-icon">VI</span>
+                            <div class="cap-name">Vision</div>
+                            <p class="cap-desc">The new world, already seen. Present actions are future facts.</p>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <div class="about-right">
-                    <div class="hobby-grid">
-                        <div class="hobby-card reveal">
-                            <span class="hobby-icon">🎾</span>
-                            <h4>Tennis</h4>
-                            <p>National-level champion. Precision, patience, and the will to dominate — on court as in
-                                life.</p>
+            <section id="final">
+                <div class="red-circle"></div>
+                <div class="book-close-overlay" id="bookClose"></div>
+                <div class="judgment-text" id="judgmentText">
+                    <h2>You have been<br>judged.</h2>
+                </div>
+                <div class="final-inner">
+                    <p class="final-line reveal">End of Transmission</p>
+                    <h2 class="final-title reveal">Contact<br>Kira</h2>
+                    <p class="final-subtitle reveal">If you are worthy of an audience.</p>
+                    <button id="writeNameBtn" class="final-cta reveal" style="cursor:pointer;">Write a Name <span
+                            style="font-size:1.2em;">→</span></button>
+                </div>
+                <div style="position:absolute; bottom:2rem; left:0; right:0; text-align:center; z-index:20;">
+                    <p
+                        style="font-family: var(--font-type); font-size:0.55rem; letter-spacing:0.35em; color:rgba(255,255,255,0.1); text-transform:uppercase;">
+                        Death Note Portfolio — Light Yagami — The God of the New World — MMXXV
+                    </p>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ── DEATH NOTE MODAL ── -->
+        <div class="dn-overlay" id="dnOverlay" role="dialog" aria-modal="true"
+            aria-label="Write a Name in the Death Note">
+            <div class="dn-book-wrapper">
+                <div class="dn-book" id="dnBook">
+                    <!-- Book Cover -->
+                    <div class="dn-cover">
+                        <div class="dn-cover-front">
+                            <h3>Death Note</h3>
+                            <p class="dn-cover-sub">How to use it</p>
                         </div>
-                        <div class="hobby-card reveal">
-                            <span class="hobby-icon">♟</span>
-                            <h4>Chess &amp; Strategy</h4>
-                            <p>Mastered at age 12. Every match is a dissection of the opponent's psychology.</p>
-                        </div>
-                        <div class="hobby-card reveal">
-                            <span class="hobby-icon">📖</span>
-                            <h4>Academic Excellence</h4>
-                            <p>Scored 100th percentile nationally. Studies not for grades — but because knowledge is
-                                power.</p>
-                        </div>
-                        <div class="hobby-card reveal">
-                            <span class="hobby-icon">🎭</span>
-                            <h4>Theatre of Deception</h4>
-                            <p>Every interaction is a performance. Every word, calculated. Trust is a weapon he wields
-                                perfectly.</p>
-                        </div>
+                        <div class="dn-cover-back"></div>
                     </div>
 
-                    <div class="trait-bars reveal">
-                        <h4 class="trait-title">Personality Profile</h4>
-                        <div class="trait-row" data-pct="99">
-                            <span class="trait-label">Intelligence</span>
-                            <div class="trait-track">
-                                <div class="trait-fill"></div>
-                            </div>
-                            <span class="trait-val">99</span>
+                    <!-- Book Page (Modal Body) -->
+                    <div class="dn-page dn-modal">
+                        <button class="dn-modal-close" id="dnClose" aria-label="Close">&times;</button>
+
+                        <!-- Form view -->
+                        <div id="dnFormView">
+                            <p class="dn-modal-eyebrow">The Death Note</p>
+                            <h2 class="dn-modal-title">Write a Name</h2>
+                            <p class="dn-modal-sub">The human whose name is written in this note shall die.<br>Are you
+                                certain of
+                                your judgement?</p>
+
+                            <form id="dnForm" novalidate>
+                                <div class="dn-field">
+                                    <label for="dnName">Name of the Condemned</label>
+                                    <input type="text" id="dnName" autocomplete="off" placeholder="Full name..."
+                                        maxlength="80" required />
+                                </div>
+                                <div class="dn-field">
+                                    <label for="dnCause">Cause / Message <span
+                                            style="opacity:.4;font-size:.85em;">(optional)</span></label>
+                                    <textarea id="dnCause" rows="3"
+                                        placeholder="Cause of death or message..."></textarea>
+                                </div>
+                                <button type="submit" class="dn-submit" id="dnSubmitBtn"><span>Seal the Judgement
+                                        &nbsp;→</span></button>
+                                <p class="dn-error" id="dnError">Please enter a name before sealing.</p>
+                            </form>
                         </div>
-                        <div class="trait-row" data-pct="95">
-                            <span class="trait-label">Ambition</span>
-                            <div class="trait-track">
-                                <div class="trait-fill"></div>
-                            </div>
-                            <span class="trait-val">95</span>
-                        </div>
-                        <div class="trait-row" data-pct="88">
-                            <span class="trait-label">Manipulation</span>
-                            <div class="trait-track">
-                                <div class="trait-fill"></div>
-                            </div>
-                            <span class="trait-val">88</span>
-                        </div>
-                        <div class="trait-row" data-pct="72">
-                            <span class="trait-label">Empathy</span>
-                            <div class="trait-track">
-                                <div class="trait-fill"></div>
-                            </div>
-                            <span class="trait-val">72</span>
-                        </div>
-                        <div class="trait-row" data-pct="100">
-                            <span class="trait-label">Conviction</span>
-                            <div class="trait-track">
-                                <div class="trait-fill"></div>
-                            </div>
-                            <span class="trait-val">∞</span>
+
+                        <!-- Confirmation view -->
+                        <div class="dn-confirm" id="dnConfirm">
+                            <span class="dn-confirm-icon">✦</span>
+                            <p class="dn-confirm-msg">Judgement has been sealed.</p>
+                            <p class="dn-confirm-sub">The name has been written.<br>The note does not forget.</p>
                         </div>
                     </div>
                 </div>
-
-            </div>
-        </section>
-
-        <section id="rules">
-            <div class="rules-inner">
-                <div class="rules-header reveal">How to Use It</div>
-                <h2 class="rules-title reveal">Rules of the<br>Death Note</h2>
-                <div class="rule-item" data-rule="The human whose name is written in this note shall die.">
-                    <span class="rule-num">I.</span>
-                    <p class="rule-text"></p>
-                </div>
-                <div class="rule-item"
-                    data-rule="This note will not take effect unless the writer has the person's face in their mind when writing their name.">
-                    <span class="rule-num">II.</span>
-                    <p class="rule-text"></p>
-                </div>
-                <div class="rule-item"
-                    data-rule="If the cause of death is written within 40 seconds of writing the person's name, it will happen.">
-                    <span class="rule-num">III.</span>
-                    <p class="rule-text"></p>
-                </div>
-                <div class="rule-item"
-                    data-rule="If the cause of death is not specified, the person will simply die of a heart attack.">
-                    <span class="rule-num">IV.</span>
-                    <p class="rule-text"></p>
-                </div>
-                <div class="rule-item"
-                    data-rule="After writing the cause of death, the details of the death should be written in the next 6 minutes and 40 seconds.">
-                    <span class="rule-num">V.</span>
-                    <p class="rule-text"></p>
-                </div>
-            </div>
-        </section>
-
-        <section id="judgements">
-            <p class="section-eyebrow reveal">Case Files — Judged</p>
-            <h2 class="section-title reveal" data-text="Judgements">Judgements</h2>
-            <div class="judgements-grid">
-                <div class="case-card">
-                    <div class="case-num">01</div>
-                    <h3 class="case-name"><span class="case-name-written">Global Crime Reduction</span></h3>
-                    <p class="case-desc">Eliminated thousands of high-profile criminals across the globe.
-                        Caused worldwide fear among offenders. Crime rates significantly decreased —
-                        the world began to bow.</p>
-                    <div class="case-tags"><span class="case-tag">Elimination</span><span class="case-tag">Global
-                            Scale</span><span class="case-tag">Fear Factor</span></div>
-                </div>
-                <div class="case-card">
-                    <div class="case-num">02</div>
-                    <h3 class="case-name"><span class="case-name-written">Anonymous Identity Maintenance</span></h3>
-                    <p class="case-desc">Operated under the alias "Kira" while evading every global law enforcement
-                        agency. Maintained a flawless dual identity as both honours student and silent executioner.</p>
-                    <div class="case-tags"><span class="case-tag">Alias: Kira</span><span class="case-tag">Dual
-                            Identity</span><span class="case-tag">Ghost Protocol</span></div>
-                </div>
-                <div class="case-card">
-                    <div class="case-num">03</div>
-                    <h3 class="case-name"><span class="case-name-written">Psychological Warfare</span></h3>
-                    <p class="case-desc">Outsmarted the world's elite investigators. Manipulated allies and enemies
-                        alike.
-                        Controlled the global narrative through fear, influence, and calculated deception.</p>
-                    <div class="case-tags"><span class="case-tag">Mind Games</span><span
-                            class="case-tag">Manipulation</span><span class="case-tag">Narrative Control</span></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="mind">
-            <div class="mind-bg-words">
-                <span class="bg-word" style="font-size:20vw; top:10%; left:-5%;">JUSTICE</span>
-                <span class="bg-word" style="font-size:15vw; bottom:5%; right:-5%; animation-delay: -7s;">CONTROL</span>
-            </div>
-            <div class="mind-content">
-                <p class="section-eyebrow" style="text-align:center; margin-bottom:2rem;">Cognitive Arsenal</p>
-                <div style="margin-bottom: 3rem;">
-                    <div class="mind-word-reveal reveal" id="mindWordCycle">STRATEGY</div>
-                </div>
-                <div class="capabilities-grid">
-                    <div class="cap-item reveal"><span class="cap-icon">I</span>
-                        <div class="cap-name">Strategy</div>
-                        <p class="cap-desc">Multi-step planning across time horizons. Outcome simulation before a single
-                            action is taken.</p>
-                    </div>
-                    <div class="cap-item reveal"><span class="cap-icon">II</span>
-                        <div class="cap-name">Justice</div>
-                        <p class="cap-desc">Absolute moral clarity. Decisions executed without hesitation, without
-                            mercy, without error.</p>
-                    </div>
-                    <div class="cap-item reveal"><span class="cap-icon">III</span>
-                        <div class="cap-name">Control</div>
-                        <p class="cap-desc">Mastery of systems, people, and outcomes. Variables reduced to zero.</p>
-                    </div>
-                    <div class="cap-item reveal"><span class="cap-icon">IV</span>
-                        <div class="cap-name">Deduction</div>
-                        <p class="cap-desc">Pattern recognition beyond conscious thought. Truth extracted from noise.
-                        </p>
-                    </div>
-                    <div class="cap-item reveal"><span class="cap-icon">V</span>
-                        <div class="cap-name">Precision</div>
-                        <p class="cap-desc">Every action calibrated. Minimal input, maximum consequence.</p>
-                    </div>
-                    <div class="cap-item reveal"><span class="cap-icon">VI</span>
-                        <div class="cap-name">Vision</div>
-                        <p class="cap-desc">The new world, already seen. Present actions are future facts.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="final">
-            <div class="red-circle"></div>
-            <div class="book-close-overlay" id="bookClose"></div>
-            <div class="judgment-text" id="judgmentText">
-                <h2>You have been<br>judged.</h2>
-            </div>
-            <div class="final-inner">
-                <p class="final-line reveal">End of Transmission</p>
-                <h2 class="final-title reveal">Contact<br>Kira</h2>
-                <p class="final-subtitle reveal">If you are worthy of an audience.</p>
-                <button id="writeNameBtn" class="final-cta reveal" style="cursor:pointer;">Write a Name <span
-                        style="font-size:1.2em;">→</span></button>
-            </div>
-            <div style="position:absolute; bottom:2rem; left:0; right:0; text-align:center; z-index:20;">
-                <p
-                    style="font-family: var(--font-type); font-size:0.55rem; letter-spacing:0.35em; color:rgba(255,255,255,0.1); text-transform:uppercase;">
-                    Death Note Portfolio — Light Yagami — The God of the New World — MMXXV
-                </p>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- ── DEATH NOTE MODAL ── -->
-    <div class="dn-overlay" id="dnOverlay" role="dialog" aria-modal="true" aria-label="Write a Name in the Death Note">
-        <div class="dn-modal">
-            <button class="dn-modal-close" id="dnClose" aria-label="Close">&times;</button>
-
-            <!-- Form view -->
-            <div id="dnFormView">
-                <p class="dn-modal-eyebrow">The Death Note</p>
-                <h2 class="dn-modal-title">Write a Name</h2>
-                <p class="dn-modal-sub">The human whose name is written in this note shall die.<br>Are you certain of
-                    your judgement?</p>
-
-                <form id="dnForm" novalidate>
-                    <div class="dn-field">
-                        <label for="dnName">Name of the Condemned</label>
-                        <input type="text" id="dnName" autocomplete="off" placeholder="Full name..." maxlength="80"
-                            required />
-                    </div>
-                    <div class="dn-field">
-                        <label for="dnCause">Cause / Message <span
-                                style="opacity:.4;font-size:.85em;">(optional)</span></label>
-                        <textarea id="dnCause" rows="3" placeholder="Cause of death or message..."></textarea>
-                    </div>
-                    <button type="submit" class="dn-submit" id="dnSubmitBtn"><span>Seal the Judgement
-                            &nbsp;→</span></button>
-                    <p class="dn-error" id="dnError">Please enter a name before sealing.</p>
-                </form>
-            </div>
-
-            <!-- Confirmation view -->
-            <div class="dn-confirm" id="dnConfirm">
-                <span class="dn-confirm-icon">✦</span>
-                <p class="dn-confirm-msg">Judgement has been sealed.</p>
-                <p class="dn-confirm-sub">The name has been written.<br>The note does not forget.</p>
             </div>
         </div>
-    </div>
 
-    <script>
-        /* ─────────────────────────────────────
-           IMAGE PIXEL REVEAL EFFECT
-        ───────────────────────────────────── */
-        const SOURCE_IMG = new Image();
-        SOURCE_IMG.src = 'data:image/jpeg;base64,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';
+        <!-- Cinematic Video Overlay -->
+        <div class="video-overlay" id="videoOverlay">
+            <video id="judgementVideo" src="judgement.mp4" playsinline disablePictureInPicture preload="auto"></video>
+        </div>
 
-        const heroImg = document.getElementById('heroImg');
-        let isHovering = false;
+        <script>
+            /* ─────────────────────────────────────
+               IMAGE PIXEL REVEAL EFFECT
+            ───────────────────────────────────── */
+            const SOURCE_IMG = new Image();
+            SOURCE_IMG.src = 'data:image/jpeg;base64,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';
 
-        // Show the LEFT half (Light Yagami) of the composite image
-        function loadHeroImg() {
-            if (SOURCE_IMG.naturalWidth) heroImg.src = SOURCE_IMG.src;
-        }
-        SOURCE_IMG.onload = loadHeroImg;
-        window.addEventListener('load', loadHeroImg);
+            const heroImg = document.getElementById('heroImg');
+            let isHovering = false;
 
-        /* ─────────────────────────────────────
-           CUSTOM CURSOR
-        ───────────────────────────────────── */
-        const heroRight = document.getElementById('heroRight');
-        const cursor = document.getElementById('custom-cursor');
-
-        heroRight.addEventListener('mouseenter', () => {
-            isHovering = true;
-            cursor.classList.add('active');
-        });
-        heroRight.addEventListener('mouseleave', () => {
-            isHovering = false;
-            cursor.classList.remove('active');
-        });
-        heroRight.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        /* ─────────────────────────────────────
-           CURSOR TRAIL (rest of page)
-        ───────────────────────────────────── */
-        const trailDots = [];
-        document.addEventListener('mousemove', (e) => {
-            if (isHovering) return;
-            const dot = document.createElement('div');
-            dot.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;width:4px;height:4px;background:rgba(139,0,0,0.7);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:opacity 0.5s ease,transform 0.5s ease;`;
-            document.body.appendChild(dot);
-            trailDots.push(dot);
-            if (trailDots.length > 12) {
-                const old = trailDots.shift();
-                old.style.opacity = '0';
-                old.style.transform = 'translate(-50%,-50%) scale(0)';
-                setTimeout(() => old.remove(), 500);
+            // Show the LEFT half (Light Yagami) of the composite image
+            function loadHeroImg() {
+                if (SOURCE_IMG.naturalWidth) heroImg.src = SOURCE_IMG.src;
             }
-        });
+            SOURCE_IMG.onload = loadHeroImg;
+            window.addEventListener('load', loadHeroImg);
 
-        /* ─────────────────────────────────────
-           SCROLL REVEALS
-        ───────────────────────────────────── */
-        const revealEls = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80);
-            });
-        }, { threshold: 0.15 });
-        revealEls.forEach(el => revealObserver.observe(el));
+            /* ─────────────────────────────────────
+               CUSTOM CURSOR
+            ───────────────────────────────────── */
+            const heroRight = document.getElementById('heroRight');
+            const cursor = document.getElementById('custom-cursor');
 
-        /* ─────────────────────────────────────
-           TYPEWRITER RULES
-        ───────────────────────────────────── */
-        function typeWriter(el, text, speed = 28) {
-            return new Promise(resolve => {
-                let i = 0; el.textContent = '';
-                const cursor = document.createElement('span');
-                cursor.className = 'typewriter-cursor'; el.appendChild(cursor);
-                const interval = setInterval(() => {
-                    if (i < text.length) { el.insertBefore(document.createTextNode(text[i]), cursor); i++; }
-                    else { clearInterval(interval); cursor.remove(); resolve(); }
-                }, speed);
+            heroRight.addEventListener('mouseenter', () => {
+                isHovering = true;
+                cursor.classList.add('active');
             });
-        }
-        const ruleItems = document.querySelectorAll('.rule-item');
-        let rulesTyped = false;
-        const rulesObserver = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && !rulesTyped) {
-                rulesTyped = true;
-                (async () => {
-                    for (const [i, item] of ruleItems.entries()) {
-                        item.classList.add('visible');
-                        const textEl = item.querySelector('.rule-text');
-                        await new Promise(r => setTimeout(r, 200));
-                        await typeWriter(textEl, item.getAttribute('data-rule'), 22);
-                        await new Promise(r => setTimeout(r, 300));
+            heroRight.addEventListener('mouseleave', () => {
+                isHovering = false;
+                cursor.classList.remove('active');
+            });
+            heroRight.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            // Auto-glow logic every 3 seconds if user isn't hovering
+            setInterval(() => {
+                if (!isHovering) {
+                    heroRight.classList.add('auto-glow');
+                    setTimeout(() => heroRight.classList.remove('auto-glow'), 800);
+                }
+            }, 3000);
+
+            /* ─────────────────────────────────────
+               CURSOR TRAIL (rest of page)
+            ───────────────────────────────────── */
+            const trailDots = [];
+            document.addEventListener('mousemove', (e) => {
+                if (isHovering) return;
+                const dot = document.createElement('div');
+                dot.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;width:4px;height:4px;background:rgba(139,0,0,0.7);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:opacity 0.5s ease,transform 0.5s ease;`;
+                document.body.appendChild(dot);
+                trailDots.push(dot);
+                if (trailDots.length > 12) {
+                    const old = trailDots.shift();
+                    old.style.opacity = '0';
+                    old.style.transform = 'translate(-50%,-50%) scale(0)';
+                    setTimeout(() => old.remove(), 500);
+                }
+            });
+
+            /* ─────────────────────────────────────
+               SCROLL REVEALS
+            ───────────────────────────────────── */
+            const revealEls = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                });
+            }, { threshold: 0.15 });
+            revealEls.forEach(el => revealObserver.observe(el));
+
+            /* ─────────────────────────────────────
+               TYPEWRITER RULES
+            ───────────────────────────────────── */
+            function typeWriter(el, text, speed = 28) {
+                return new Promise(resolve => {
+                    let i = 0; el.textContent = '';
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typewriter-cursor'; el.appendChild(cursor);
+                    const interval = setInterval(() => {
+                        if (i < text.length) { el.insertBefore(document.createTextNode(text[i]), cursor); i++; }
+                        else { clearInterval(interval); cursor.remove(); resolve(); }
+                    }, speed);
+                });
+            }
+            const ruleItems = document.querySelectorAll('.rule-item');
+            let rulesTyped = false;
+            const rulesObserver = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !rulesTyped) {
+                    rulesTyped = true;
+                    (async () => {
+                        for (const [i, item] of ruleItems.entries()) {
+                            item.classList.add('visible');
+                            const textEl = item.querySelector('.rule-text');
+                            await new Promise(r => setTimeout(r, 200));
+                            await typeWriter(textEl, item.getAttribute('data-rule'), 22);
+                            await new Promise(r => setTimeout(r, 300));
+                        }
+                    })();
+                }
+            }, { threshold: 0.2 });
+            rulesObserver.observe(document.getElementById('rules'));
+
+            /* ─────────────────────────────────────
+               MIND CARD & WORD SYNC CYCLER
+            ───────────────────────────────────── */
+            const capItems = document.querySelectorAll('.cap-item');
+            const mindWord = document.getElementById('mindWordCycle');
+            const capWords = ['STRATEGY', 'JUSTICE', 'CONTROL', 'DEDUCTION', 'PRECISION', 'VISION'];
+
+            if (capItems.length > 0 && mindWord) {
+                let activeCapIdx = 0;
+
+                const syncWord = () => {
+                    mindWord.textContent = capWords[activeCapIdx];
+                    mindWord.classList.add('active');
+                    setTimeout(() => mindWord.classList.remove('active'), 500); // Glitch duratio
+                };
+
+                capItems[activeCapIdx].classList.add('active');
+                mindWord.textContent = capWords[activeCapIdx];
+
+                setInterval(() => {
+                    capItems[activeCapIdx].classList.remove('active');
+                    activeCapIdx = (activeCapIdx + 1) % capItems.length;
+                    capItems[activeCapIdx].classList.add('active');
+                    syncWord();
+                }, 1600);
+            }
+
+            /* ─────────────────────────────────────
+               PAGE INDICATOR
+            ───────────────────────────────────── */
+            const sections = document.querySelectorAll('section');
+            const pageNum = document.getElementById('pageNum');
+            const sectionNames = ['01', '02', '03', '04', '05'];
+            const pageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const idx = Array.from(sections).indexOf(entry.target);
+                        if (idx >= 0) pageNum.textContent = sectionNames[idx];
                     }
-                })();
-            }
-        }, { threshold: 0.2 });
-        rulesObserver.observe(document.getElementById('rules'));
+                });
+            }, { threshold: 0.5 });
+            sections.forEach(s => pageObserver.observe(s));
 
-        /* ─────────────────────────────────────
-           MIND WORD CYCLER
-        ───────────────────────────────────── */
-        const words = ['STRATEGY', 'JUSTICE', 'CONTROL', 'VICTORY', 'GENIUS', 'KIRA'];
-        let wordIdx = 0;
-        const mindWord = document.getElementById('mindWordCycle');
-        setInterval(() => {
-            mindWord.style.animation = 'glitch 0.3s steps(2) 3';
-            setTimeout(() => { wordIdx = (wordIdx + 1) % words.length; mindWord.textContent = words[wordIdx]; mindWord.style.animation = ''; }, 300);
-        }, 2500);
-
-        /* ─────────────────────────────────────
-           PAGE INDICATOR
-        ───────────────────────────────────── */
-        const sections = document.querySelectorAll('section');
-        const pageNum = document.getElementById('pageNum');
-        const sectionNames = ['01', '02', '03', '04', '05'];
-        const pageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const idx = Array.from(sections).indexOf(entry.target);
-                    if (idx >= 0) pageNum.textContent = sectionNames[idx];
-                }
-            });
-        }, { threshold: 0.5 });
-        sections.forEach(s => pageObserver.observe(s));
-
-        /* ─────────────────────────────────────
-           FINAL SECTION BOOK CLOSE
-        ───────────────────────────────────── */
-        const finalSection = document.getElementById('final');
-        const bookClose = document.getElementById('bookClose');
-        const judgmentText = document.getElementById('judgmentText');
-        let finalTriggered = false;
-        new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && !finalTriggered) {
-                finalTriggered = true;
-                setTimeout(() => {
-                    bookClose.style.transition = 'transform 1.5s cubic-bezier(0.76, 0, 0.24, 1)';
-                    bookClose.style.transform = 'scaleY(1)';
+            /* ─────────────────────────────────────
+               FINAL SECTION BOOK CLOSE
+            ───────────────────────────────────── */
+            const finalSection = document.getElementById('final');
+            const bookClose = document.getElementById('bookClose');
+            const judgmentText = document.getElementById('judgmentText');
+            let finalTriggered = false;
+            new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !finalTriggered) {
+                    finalTriggered = true;
                     setTimeout(() => {
-                        judgmentText.style.transition = 'opacity 0.8s ease';
-                        judgmentText.style.opacity = '1';
+                        bookClose.style.transition = 'transform 1.5s cubic-bezier(0.76, 0, 0.24, 1)';
+                        bookClose.style.transform = 'scaleY(1)';
                         setTimeout(() => {
-                            judgmentText.style.opacity = '0';
-                            bookClose.style.transform = 'scaleY(0)';
-                            bookClose.style.transformOrigin = 'bottom';
-                        }, 2000);
-                    }, 1400);
-                }, 1000);
-            }
-        }, { threshold: 0.6 }).observe(finalSection);
-
-        /* ─────────────────────────────────────
-           GSAP SCROLL
-        ───────────────────────────────────── */
-        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-            gsap.registerPlugin(ScrollTrigger);
-            gsap.to('.hero-left', { y: -60, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
-            gsap.from('#rules', { rotateX: 3, transformOrigin: 'top center', ease: 'none', scrollTrigger: { trigger: '#rules', start: 'top bottom', end: 'top top', scrub: true } });
-            gsap.from('.case-card', { y: 60, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out', scrollTrigger: { trigger: '#judgements', start: 'top 95%' } });
-            gsap.to('.mind-bg-words', { y: -100, ease: 'none', scrollTrigger: { trigger: '#mind', start: 'top bottom', end: 'bottom top', scrub: true } });
-            gsap.from('#final .red-circle', { scale: 0, opacity: 0, duration: 1.5, ease: 'power2.out', scrollTrigger: { trigger: '#final', start: 'top 80%' } });
-        }
-
-        /* ─────────────────────────────────────
-           DEATH NOTE MODAL
-        ───────────────────────────────────── */
-        const overlay = document.getElementById('dnOverlay');
-        const dnClose = document.getElementById('dnClose');
-        const dnForm = document.getElementById('dnForm');
-        const dnName = document.getElementById('dnName');
-        const dnError = document.getElementById('dnError');
-        const dnSubmit = document.getElementById('dnSubmitBtn');
-        const dnFormView = document.getElementById('dnFormView');
-        const dnConfirm = document.getElementById('dnConfirm');
-
-        function openModal() {
-            overlay.classList.add('open');
-            dnName.focus();
-        }
-        function closeModal() {
-            overlay.classList.remove('open');
-            setTimeout(() => {
-                dnFormView.style.display = '';
-                dnConfirm.classList.remove('show');
-                dnForm.reset();
-                dnError.classList.remove('show');
-                dnSubmit.disabled = false;
-                dnSubmit.querySelector('span').textContent = 'Seal the Judgement  →';
-            }, 500);
-        }
-
-        document.getElementById('writeNameBtn').addEventListener('click', openModal);
-        dnClose.addEventListener('click', closeModal);
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-        dnForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = dnName.value.trim();
-            if (!name) { dnError.classList.add('show'); return; }
-            dnError.classList.remove('show');
-            dnSubmit.disabled = true;
-            dnSubmit.querySelector('span').textContent = 'Writing...';
-
-            // Brief pause for dramatic effect, then show confirmation
-            setTimeout(() => {
-                dnFormView.style.display = 'none';
-                dnConfirm.classList.add('show');
-            }, 800);
-        });
-
-        /* ── TRAIT BAR ANIMATION ── */
-        const traitBars = document.querySelectorAll('.trait-row');
-        const barObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const pct = entry.target.getAttribute('data-pct');
-                    entry.target.querySelector('.trait-fill').style.width = pct + '%';
-                    barObserver.unobserve(entry.target);
+                            judgmentText.style.transition = 'opacity 0.8s ease';
+                            judgmentText.style.opacity = '1';
+                            setTimeout(() => {
+                                judgmentText.style.opacity = '0';
+                                bookClose.style.transform = 'scaleY(0)';
+                                bookClose.style.transformOrigin = 'bottom';
+                            }, 2000);
+                        }, 1400);
+                    }, 1000);
                 }
+            }, { threshold: 0.6 }).observe(finalSection);
+
+            /* ─────────────────────────────────────
+               GSAP SCROLL
+            ───────────────────────────────────── */
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                gsap.to('.hero-left', { y: -60, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+                gsap.from('#rules', { rotateX: 3, transformOrigin: 'top center', ease: 'none', scrollTrigger: { trigger: '#rules', start: 'top bottom', end: 'top top', scrub: true } });
+                gsap.from('.case-card', { y: 60, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out', scrollTrigger: { trigger: '#judgements', start: 'top 95%' } });
+                gsap.to('.mind-bg-words', { y: -100, ease: 'none', scrollTrigger: { trigger: '#mind', start: 'top bottom', end: 'bottom top', scrub: true } });
+                gsap.from('#final .red-circle', { scale: 0, opacity: 0, duration: 1.5, ease: 'power2.out', scrollTrigger: { trigger: '#final', start: 'top 80%' } });
+            }
+
+            /* ─────────────────────────────────────
+               DEATH NOTE MODAL
+            ───────────────────────────────────── */
+            const overlay = document.getElementById('dnOverlay');
+            const dnClose = document.getElementById('dnClose');
+            const dnForm = document.getElementById('dnForm');
+            const dnName = document.getElementById('dnName');
+            const dnError = document.getElementById('dnError');
+            const dnSubmit = document.getElementById('dnSubmitBtn');
+            const dnFormView = document.getElementById('dnFormView');
+            const dnConfirm = document.getElementById('dnConfirm');
+
+            function openModal() {
+                overlay.classList.add('open');
+                setTimeout(() => {
+                    overlay.classList.add('open-book');
+                    setTimeout(() => {
+                        dnName.focus();
+                    }, 1000); // give book time to open
+                }, 300); // give overlay time to fade in
+            }
+            function closeModal() {
+                overlay.classList.remove('open-book');
+                setTimeout(() => {
+                    overlay.classList.remove('open');
+                    setTimeout(() => {
+                        dnFormView.style.display = '';
+                        dnConfirm.classList.remove('show');
+                        dnForm.reset();
+                        dnError.classList.remove('show');
+                        dnSubmit.disabled = false;
+                        dnSubmit.querySelector('span').textContent = 'Seal the Judgement  →';
+                    }, 500); // wait for fade out
+                }, 800); // wait for book to close
+            }
+
+            document.getElementById('writeNameBtn').addEventListener('click', openModal);
+            dnClose.addEventListener('click', closeModal);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+            dnForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = dnName.value.trim();
+                if (!name) { dnError.classList.add('show'); return; }
+                dnError.classList.remove('show');
+                dnSubmit.disabled = true;
+                dnSubmit.querySelector('span').textContent = 'Writing...';
+
+                // Brief pause for dramatic effect, then show confirmation
+                setTimeout(() => {
+                    dnFormView.style.display = 'none';
+                    dnConfirm.classList.add('show');
+
+                    // Play cinematic video after short confirmation delay
+                    setTimeout(() => {
+                        const vidOverlay = document.getElementById('videoOverlay');
+                        const jVideo = document.getElementById('judgementVideo');
+                        if (vidOverlay && jVideo) {
+                            vidOverlay.classList.add('show');
+                            jVideo.play().catch(e => console.log("Video auto-play blocked", e));
+                            
+                            // When video ends, hide everything and close modal
+                            jVideo.onended = () => {
+                                vidOverlay.classList.remove('show');
+                                closeModal();
+                            };
+                            // Also allow clicking to skip
+                            vidOverlay.onclick = () => {
+                                jVideo.pause();
+                                jVideo.currentTime = 0;
+                                vidOverlay.classList.remove('show');
+                                closeModal();
+                            };
+                        }
+                    }, 2200);
+
+                }, 800);
             });
-        }, { threshold: 0.3 });
-        traitBars.forEach(b => barObserver.observe(b));
-    </script>
+
+            /* ── TRAIT BAR ANIMATION ── */
+            const traitBars = document.querySelectorAll('.trait-row');
+            const barObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const pct = entry.target.getAttribute('data-pct');
+                        entry.target.querySelector('.trait-fill').style.width = pct + '%';
+                        barObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            traitBars.forEach(b => barObserver.observe(b));
+
+            /* ─────────────────────────────────────
+               DEVICE SIMULATOR TOGGLE
+            ───────────────────────────────────── */
+            const simToggleBtn = document.getElementById('simToggleBtn');
+            if (simToggleBtn) {
+                let isSimulating = false;
+                simToggleBtn.addEventListener('click', () => {
+                    isSimulating = !isSimulating;
+                    if (isSimulating) {
+                        document.body.classList.add('simulate-mobile');
+                        simToggleBtn.textContent = '💻 Desktop';
+                        simToggleBtn.classList.add('active');
+                    } else {
+                        document.body.classList.remove('simulate-mobile');
+                        simToggleBtn.textContent = '📱 Mobile';
+                        simToggleBtn.classList.remove('active');
+                    }
+                    // Trigger resize so GSAP ScrollTrigger recalculates layout
+                    setTimeout(() => { window.dispatchEvent(new Event('resize')); }, 100);
+                });
+            }
+        </script>
+    </div> <!-- /#site-wrapper -->
 </body>
 
 </html>
