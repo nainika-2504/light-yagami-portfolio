@@ -8,13 +8,7 @@ A cinematic, single-page portfolio website themed around **Light Yagami** from D
 
 ## 🖤 Live Demo
 
-Open `index.html` in your browser, or serve it locally:
-
-```bash
-# Any simple static server works, e.g.:
-npx serve .
-# then visit http://localhost:3000
-```
+**[https://light-yagami-portfolio.netlify.app/](https://light-yagami-portfolio.netlify.app/)**
 
 ---
 
